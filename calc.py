@@ -2,6 +2,7 @@ import tkinter as tk
 
 win = tk.Tk()
 win.title('КАЛЬКУЛЯТОР')
+
 win.geometry('300x300+1520+100')
 win.config(bg='black')
 win.grid_columnconfigure(0, minsize=80)
@@ -25,7 +26,11 @@ def entry_simbol(simbol):
     value = entry1.get()
     if value[-1].isdigit():
         entry1.delete(0, tk.END)
-        entry1.insert(0, round(eval(value)))
+        try:
+            entry1.insert(0, round(eval(value)))
+        except (ZeroDivisionError, TypeError, SyntaxError):
+            entry1.delete(0, tk.END)
+            entry1.insert((0, 0))
     if value[-1] in '+-*/':
         value = value[:-1]
         entry1.delete(len(value), tk.END)
@@ -35,7 +40,11 @@ def entry_simbol(simbol):
 def result():
     value = entry1.get()
     entry1.delete(0, tk.END)
-    entry1.insert(0, round(eval(value)))
+    try:
+        entry1.insert(0, round(eval(value)))
+    except (ZeroDivisionError, TypeError, SyntaxError):
+        entry1.delete(0, tk.END)
+        entry1.insert((0, '0'))
 
 
 def c():
@@ -61,8 +70,20 @@ def create_btn_result(digi):
 
 
 def create_btn_c(digi):
-    return tk.Button(win, text=digi, font=('Arial', 15, 'bold') , bd=5, bg='red', fg='white', activebackground="yellow", command=lambda: c())
+    return tk.Button(win, text=digi, font=('Arial', 15, 'bold'), bd=5, bg='red', fg='white', activebackground="yellow",
+                     command=lambda: c())
 
+
+def press_key(event):
+    if event.char.isdigit():
+        entry_insert(event.char)
+    elif event.char in '+-*/':
+        entry_simbol(event.char)
+    elif event.char in '\r':
+        result()
+
+
+win.bind('<Key>', press_key)
 
 create_btn(1).grid(row=1, column=0, sticky='we', padx=8, pady=2)
 create_btn(2).grid(row=1, column=1, sticky='we', padx=8, pady=2)
