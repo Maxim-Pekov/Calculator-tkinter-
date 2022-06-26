@@ -1,4 +1,5 @@
 import tkinter as tk
+
 win = tk.Tk()
 win.title('КАЛЬКУЛЯТОР')
 win.geometry('300x300+1520+100')
@@ -12,11 +13,13 @@ entry1 = tk.Entry(win, justify=tk.RIGHT, font=('Arial', 20, 'bold'), bg='black',
 entry1.insert(0, '0')
 entry1.grid(row=0, column=0, sticky='wens', columnspan=4)
 
+
 def entry_insert(digit):
     if entry1.get() == '0':
         entry1.delete(0, tk.END)
     lenght_entry = len(entry1.get())
     entry1.insert(lenght_entry, digit)
+
 
 def entry_simbol(simbol):
     value = entry1.get()
@@ -25,29 +28,37 @@ def entry_simbol(simbol):
         entry1.delete(len(value), tk.END)
     entry1.insert(len(value), simbol)
 
-def ravno():
+
+def result():
     value = entry1.get()
     entry1.delete(0, tk.END)
     entry1.insert(0, round(eval(value)))
+
 
 def c():
     entry1.delete(0, tk.END)
     entry1.insert(0, '0')
 
+
 def create_btn(digi):
-    return tk.Button(win, text=digi, bd=5, font=('Arial', 15, 'bold') , activebackground="yellow", command=lambda: entry_insert(digi))
+    return tk.Button(win, text=digi, bd=5, font=('Arial', 15, 'bold'), activebackground="yellow",
+                     command=lambda: entry_insert(digi))
+
 
 def add_simbol(simbol):
     value = entry1.get()
     print(value)
-    return tk.Button(win, text=simbol, bd=5, activebackground="yellow", font=('Arial', 15, 'bold'), bg='green' , command=lambda: entry_simbol(simbol))
+    return tk.Button(win, text=simbol, bd=5, activebackground="yellow", font=('Arial', 15, 'bold'), bg='green',
+                     command=lambda: entry_simbol(simbol))
 
 
-def create_btn_ravno(digi):
-    return tk.Button(win, text=digi, font=('Arial', 15, 'bold') , bd=5, activebackground="yellow", command=lambda: ravno())
+def create_btn_result(digi):
+    return tk.Button(win, text=digi, font=('Arial', 15, 'bold'), bd=5, fg='green', activebackground="yellow",
+                     command=lambda: result())
+
 
 def create_btn_c(digi):
-    return tk.Button(win, text=digi, font=('Arial', 15, 'bold') , bd=5, activebackground="yellow", command=lambda: c())
+    return tk.Button(win, text=digi, font=('Arial', 15, 'bold') , bd=5, bg='red', fg='white', activebackground="yellow", command=lambda: c())
 
 
 create_btn(1).grid(row=1, column=0, sticky='we', padx=8, pady=2)
@@ -65,6 +76,6 @@ add_simbol('-').grid(row=2, column=3, sticky='we', padx=8, pady=2)
 add_simbol('*').grid(row=3, column=3, sticky='we', padx=8, pady=2)
 add_simbol('/').grid(row=4, column=3, sticky='we', padx=8, pady=2)
 create_btn_c('C').grid(row=4, column=1, sticky='we', padx=8, pady=2)
-create_btn_ravno('=').grid(row=4, column=2, sticky='we', padx=8, pady=2)
+create_btn_result('=').grid(row=4, column=2, sticky='we', padx=8, pady=2)
 
 win.mainloop()
