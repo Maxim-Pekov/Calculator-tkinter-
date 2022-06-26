@@ -23,6 +23,9 @@ def entry_insert(digit):
 
 def entry_simbol(simbol):
     value = entry1.get()
+    if value[-1].isdigit():
+        entry1.delete(0, tk.END)
+        entry1.insert(0, round(eval(value)))
     if value[-1] in '+-*/':
         value = value[:-1]
         entry1.delete(len(value), tk.END)
