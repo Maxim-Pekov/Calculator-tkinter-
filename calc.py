@@ -94,6 +94,8 @@ def create_btn_c(digi):
 
 def press_key(event):
     c = entry1.get()
+    if  not event.char.isdigit() and event.char not in '+-*/'and event.char not in  '\r':
+        entry1.delete(len(entry1.get())-1, tk.END)
     if event.char.isdigit():
         g = event.char
         entry_insert_event(g)
