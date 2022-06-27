@@ -19,8 +19,17 @@ def entry_insert(digit):
     if entry1.get() == '0':
         entry1.delete(0, tk.END)
     lenght_entry = len(entry1.get())
+
     entry1.insert(lenght_entry, digit)
 
+def entry_insert_event(digit):
+    lenght_entry = len(entry1.get())
+    x = entry1.get()
+    if lenght_entry == 1 and x == digit:
+        entry1.delete(0, tk.END)
+
+    entry1.delete(lenght_entry-1, tk.END)
+    entry1.insert(lenght_entry, digit)
 
 def entry_simbol(simbol):
     value = entry1.get()
@@ -36,6 +45,16 @@ def entry_simbol(simbol):
         entry1.delete(len(value), tk.END)
     entry1.insert(len(value), simbol)
 
+def entry_simbol_event(simbol):
+    value = entry1.get()
+    entry1.delete(len(value)-1, tk.END)
+    val = entry1.get()
+    if val[-1] in '+-*/':
+        val = val[:-1]
+        entry1.delete(len(val), tk.END)
+    v  = entry1.get()
+    entry1.delete(0, tk.END)
+    entry1.insert(0, str(eval(v))+simbol)
 
 def result():
     value = entry1.get()
@@ -59,7 +78,6 @@ def create_btn(digi):
 
 def add_simbol(simbol):
     value = entry1.get()
-    print(value)
     return tk.Button(win, text=simbol, bd=5, activebackground="yellow", font=('Arial', 15, 'bold'), bg='green',
                      command=lambda: entry_simbol(simbol))
 
@@ -75,15 +93,21 @@ def create_btn_c(digi):
 
 
 def press_key(event):
+    c = entry1.get()
     if event.char.isdigit():
-        entry_insert(event.char)
+        g = event.char
+        entry_insert_event(g)
     elif event.char in '+-*/':
-        entry_simbol(event.char)
+        entry_simbol_event(event.char)
     elif event.char in '\r':
         result()
 
-
+def LKM(event):
+    if entry1.get() == '0' or ntry1.get() == 0:
+        entry1.delete(0, tk.END)
 win.bind('<Key>', press_key)
+
+entry1.bind('<Button-1>', LKM)
 
 create_btn(1).grid(row=1, column=0, sticky='we', padx=8, pady=2)
 create_btn(2).grid(row=1, column=1, sticky='we', padx=8, pady=2)
